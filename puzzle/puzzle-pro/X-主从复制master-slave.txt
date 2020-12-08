@@ -1,0 +1,74 @@
+create user 'slave'@'%' IDENTIFIED WITH mysql_native_password BY 'slave';
+
+GRANT REPLICATION SLAVE ON *.* TO 'slave'@'%';
+
+flush privileges;
+
+SHOW MASTER STATUS;
+mysql> show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000015 |      811 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.01 sec)
+
+
+
+
+从机配置：
+
+CREATE USER 'repl'@'%' IDENTIFIED WITH mysql_native_password BY 'Ron_master_1';
+GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+
+CHANGE MASTER TO
+MASTER_HOST='192.168.199.124',
+MASTER_USER='repl',
+MASTER_PASSWORD='Ron_master_1',
+MASTER_LOG_FILE='mysql-bin.000015',
+MASTER_LOG_POS=856;
+
+start slave;
+
+show slave status;
+
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+
+
+可能存在的问题：
+1、Slave_IO_Running: No
+
+server_uuid是相同的，show variables like '%server_uuid%';
+解决方法：
+找到data文件夹下（/var/lib/mysql）的auto.cnf文件，修改里面的uuid值，保证各个db的uuid不一样，重启db即可
+
+
+2、Slave_SQL_Running: Yes
+存在两种可能性：
+1）程序可能在slave上进行了写操作
+2）也可能是slave机器重起后，事务回滚造成的.
+
+一般是事务回滚造成的：
+解决办法：
+mysql> stop slave ;
+mysql> set GLOBAL SQL_SLAVE_SKIP_COUNTER=1;
+mysql> start slave ;
+
+ 
+
+解决办法二、
+首先停掉Slave服务：slave stop
+到主服务器上查看主机状态：
+记录File和Position对应的值
+
+重新执行下面语句:
+CHANGE MASTER TO
+MASTER_HOST='192.168.199.124',
+MASTER_USER='repl',
+MASTER_PASSWORD='Ron_master_1',
+MASTER_LOG_FILE='mysql-bin.000015',
+MASTER_LOG_POS=856;
+
+start slave;
+

@@ -1,0 +1,28 @@
+AttributeError: 'NoneType' object has no attribute 'group'
+NoneType对象没有属性组
+
+1.错误的原因： 
+首先判断的是 result.group(1) 的内容  --> 如果没有内容 返回的是None 
+那么就会出现  'NoneType' object has no attribute 'group'  就会报错
+
+result = re.search(r"bgcolor=\"#fdfddf\"><a href=\"(.*?)\">", response_content_text)
+# 保存到字典
+# {"xxxx影片": "xxx地址"}
+films_dict[film_name] = result.group(1)
+print("已经爬取%d个电影--[%s]" % (i, film_name))
+
+正则表达式：bgcolor=\"#fdfddf\"><a href=\"(.*?)\">
+匹配的字符串内容：
+bgcolor="#fdfddf">ftp<a href="ftp://ygdy8:ygdy8@yg18.dydytt.net:6025/阳光电影www.ygdy8.com.托米莉斯女王.BD.1080p.中字.mkv">
+bgcolor="#fdfddf"><a href="ftp://ygdy8:ygdy8@yg90.dydytt.net:4108/阳光电影www.ygdy8.com.数码宝贝：最后的进化.BD.1080p.日语中字.mkv">
+
+
+2.正确的是：
+判断匹配到的字符串内容 result ，如果有内容，保存在字典中 ，否则，退出此次循环，继续下一次
+
+  if result:
+     films_dict[film_name] = result.group(1)
+     print("第%d个影片--[%s]--已成功爬取地址" % (i, film_name))
+  else:
+      continue
+

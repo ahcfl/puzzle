@@ -1,0 +1,23 @@
+nfile = open("message.txt", "r") ＃只读模式打开message.txt
+outfile = open("newMsg.txt", "w") ＃写模式打开newMsg.txt
+count = 0 ＃创建变量count ，值为整数0
+stringList = infile.readlines() ＃一次性读取message.txt中的所有行，返回字符串列表，
+一 行文本就是列表的一项
+for line in stringList: ＃迭代该列表
+lineList = line.split() ＃用split讲该行的单词分割成列表，每个单词就时一个列表
+项目，split的默认参数是空格，所以不传递任何参数时
+分割空格，在英文中也就等同于分割单词
+for word in lineList: ＃迭代该行的每个单词
+count = count + 1 ＃每迭代一次count＋1
+word = word[::-1] ＃利用切片，反转该单词
+print(word, end = ' ') ＃
+outfile.write(word + ' ') #将单词写入到newMsg.txt文件中
+if count == 10: ＃当单词数量读取到10个时
+print('') ＃打印一个空白行
+outfile.write('\n') ＃在newMsg.txt中写入一个换行符（这应该是linux，
+在windows下应该是\r\n）
+count = 0 ＃计数变量count 恢复成0
+infile.close() ＃关闭message.txt文件拘柄
+outfile.close() ＃关闭newMsg.txt文件拘柄
+
+

@@ -1,0 +1,18 @@
+1.
+Traceback (most recent call last):        -----》 已经解决
+  File "/home/cfl/Desktop/03_网络编程/01_文件下载器_客户端.py", line 24, in <module>
+    with open("/home/demo/Desktop/"+ file_name, "w") as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/demo/Desktop/1.txt'
+2.
+Traceback (most recent call last):
+  File "/home/cfl/Desktop/03_网络编程/01_文件下载器_客户端.py", line 18, in <module>
+    tcp_client_socket.connect(("192.168.182.132", 8080))
+ConnectionRefusedError: [Errno 111] Connection refused
+3.
+Local variable 'response_data' might be referenced before assignment less... (Ctrl+F1) 
+This inspection warns about local variables referenced before assignment.
+本地变量'response_data'可能会在赋值前引用较少…(Ctrl + F1)
+此检查警告赋值前引用的局部变量。
+4.
+AttributeError: 'NoneType' object has no attribute 'group'    ----》 已经解决
+NoneType对象没有属性组

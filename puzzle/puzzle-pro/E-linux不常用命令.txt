@@ -1,0 +1,4 @@
+重启网络：sudo /etc/init.d/networking restart
+打开root归档管理器：sudo nautilus
+拷贝文件重命名： sudo cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf
+
